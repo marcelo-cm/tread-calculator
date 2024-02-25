@@ -244,17 +244,18 @@ const Calculator = ({ dark }: { dark: boolean }) => {
             <CalculatorButton handleItemClick={addElement} value={"*"}>
               <Cross1Icon />
             </CalculatorButton>
+            <CalculatorButton handleItemClick={addElement} value={"/"}>
+              <div className="w-[15px] h-[15px] flex justify-center items-center">
+                ÷
+              </div>
+            </CalculatorButton>
             <CalculatorButton handleItemClick={addElement} value={"+"}>
               <PlusIcon />
             </CalculatorButton>
             <CalculatorButton handleItemClick={addElement} value={"-"}>
               <DashIcon />
             </CalculatorButton>
-            <CalculatorButton handleItemClick={addElement} value={"/"}>
-              <div className="w-[15px] h-[15px] flex justify-center items-center">
-                ÷
-              </div>
-            </CalculatorButton>
+
             <CalculatorButton handleItemClick={addElement} value={"("}>
               <div className="w-[15px] h-[15px] flex justify-center items-center">
                 (
