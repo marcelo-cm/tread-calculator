@@ -180,7 +180,7 @@ const Calculator = ({ dark }: { dark: boolean }) => {
       <p className="text-[#f6cc46] font-semibold italic text-xs">
         The Tread 9000TS – Marcelo Chaman Mallqui
       </p>
-      <div className="bg-[#161616] flex flex-col p-4 border border-[#2e2e2e] rounded-md w-full h-fit min-h-16 justify-center">
+      <div className="bg-[#161616] flex flex-col p-4 border border-[#2e2e2e] rounded-md w-full h-fit min-h-20 justify-center">
         {prevEquation ? (
           <div className="mb-[2px] text-[#A0A0A0] font-normal text-xs flex flex-row justify-between">
             {renderEquation(prevEquation)}
