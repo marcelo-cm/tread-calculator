@@ -118,7 +118,6 @@ const Calculator = ({ dark }: { dark: boolean }) => {
     try {
       const result = await mathJSeval(currentEquation);
 
-      console.log(result);
       if (result.includes("error")) {
         setCurrentEquation("Error");
         return;
@@ -127,7 +126,7 @@ const Calculator = ({ dark }: { dark: boolean }) => {
       setPrevEquation(currentEquation);
       setCurrentEquation(result);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -172,6 +171,9 @@ const Calculator = ({ dark }: { dark: boolean }) => {
     select-none
     drop-shadow-2xl"
     >
+      <p className="text-[#f6cc46] font-semibold italic text-xs">
+        The Tread 9000TS – Marcelo Chaman Mallqui
+      </p>
       <div className="bg-[#161616] flex flex-col p-4 border border-[#2e2e2e] rounded-md w-full h-fit min-h-16 justify-center">
         {prevEquation ? (
           <div className="mb-[2px] text-[#A0A0A0] font-normal text-xs flex flex-row justify-between">
@@ -263,13 +265,19 @@ const Calculator = ({ dark }: { dark: boolean }) => {
                 )
               </div>
             </CalculatorButton>
-            <CalculatorButton handleItemClick={clearAll}>
-              <div className="w-[15px] h-[15px] flex justify-center items-center text-[#f6cc46]">
+            <CalculatorButton
+              handleItemClick={clearAll}
+              className="bg-[#f6cc46]"
+            >
+              <div className="w-[15px] h-[15px] flex justify-center items-center text-black">
                 C
               </div>
             </CalculatorButton>
-            <CalculatorButton handleItemClick={solveEquation}>
-              <PauseIcon className="rotate-90 text-[#f6cc46]" />
+            <CalculatorButton
+              handleItemClick={solveEquation}
+              className="bg-[#f6cc46]"
+            >
+              <PauseIcon className="rotate-90 text-black" />
             </CalculatorButton>
           </div>
         </div>

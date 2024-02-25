@@ -11,9 +11,9 @@ export async function mathJSeval(equation: string) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const result = await response.text(); // Assuming the API returns plain text
+    const result = await response.text();
     return result;
   } catch (e: any) {
-    return e.message; // Return just the error message
+    return e.message;
   }
 }
