@@ -54,6 +54,12 @@ const Calculator = ({ dark }: { dark: boolean }) => {
         case "/":
           addElement("/");
           break;
+        case "(":
+          addElement("(");
+          break;
+        case ")":
+          addElement(")");
+          break;
         case "Backspace":
           deleteLast();
           break;
