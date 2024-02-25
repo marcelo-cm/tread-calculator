@@ -8,9 +8,11 @@ import {
   PauseIcon,
   PlusIcon,
 } from "@radix-ui/react-icons";
+import { mathJSeval } from "../lib/calculator/mathJSeval";
 
 const Calculator = ({ dark }: { dark: boolean }) => {
-  const [currentEquation, setCurrentEquation] = useState<string>("test");
+  const [currentEquation, setCurrentEquation] = useState<string>("");
+  // You can encode the current equation in the URL so you can share to others
 
   function addElement(value: string | null) {
     setCurrentEquation((prev) => prev + value);
@@ -20,10 +22,20 @@ const Calculator = ({ dark }: { dark: boolean }) => {
     setCurrentEquation((prev) => prev.slice(0, -1));
   }
 
-  function solveEquation() {
+  async function solveEquation() {
     try {
-      setCurrentEquation(eval(currentEquation));
-    } catch (e) {}
+      const result = await mathJSeval(currentEquation);
+
+      console.log(result);
+      if (result.includes("error")) {
+        setCurrentEquation("Error");
+        return;
+      }
+
+      setCurrentEquation(result);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
