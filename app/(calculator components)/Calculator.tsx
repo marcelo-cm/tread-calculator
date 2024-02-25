@@ -16,6 +16,66 @@ const Calculator = ({ dark }: { dark: boolean }) => {
   const [prevEquation, setPrevEquation] = useState<string>("");
   // You can encode the current equation in the URL so you can share to others
 
+  /**
+   * Keyboard shortcuts
+   */
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter" && event.shiftKey) {
+        event.preventDefault();
+        event.stopPropagation();
+        solveEquation();
+        return;
+      }
+
+      switch (event.key) {
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+        case ".":
+          addElement(event.key);
+          break;
+        case "*":
+          addElement("*");
+          break;
+        case "+":
+          addElement("+");
+          break;
+        case "-":
+          addElement("-");
+          break;
+        case "/":
+          addElement("/");
+          break;
+        case "Backspace":
+          deleteLast();
+          break;
+        case "Escape":
+          clearAll();
+          break;
+        case "c":
+          clearAll();
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [currentEquation]);
+
+  /**
+   * Error handling & special cases
+   */
   useEffect(() => {
     if (currentEquation === "Error") {
       setTimeout(() => {
@@ -26,22 +86,36 @@ const Calculator = ({ dark }: { dark: boolean }) => {
     }
   }, [currentEquation, prevEquation]);
 
+  /**
+   * This function adds an element to the equation according to the value passed/button pressed
+   * @param value The element to be added to the equation
+   */
   function addElement(value: string | null) {
     setCurrentEquation((prev) => prev + value);
   }
 
+  /**
+   * This function deletes the last element of the equation
+   */
   function deleteLast() {
     setCurrentEquation((prev) => prev.slice(0, -1));
   }
 
+  /**
+   * This function clears the current and previous equations
+   */
   function clearAll() {
     setCurrentEquation("");
     setPrevEquation("");
   }
 
+  /**
+   * This function solves the current equation using a server-side call to the mathJSeval function.
+   * The mathJSeval function calls the math.js library to solve the equation.
+   * @returns The result of the equation
+   */
   async function solveEquation() {
     try {
-      setPrevEquation(currentEquation);
       const result = await mathJSeval(currentEquation);
 
       console.log(result);
@@ -50,12 +124,18 @@ const Calculator = ({ dark }: { dark: boolean }) => {
         return;
       }
 
+      setPrevEquation(currentEquation);
       setCurrentEquation(result);
     } catch (e) {
       console.log(e);
     }
   }
 
+  /**
+   * This function renders the equation in a more readable format according the icons used in the calculator
+   * @param equation The equation to be rendered
+   * @returns The equation in a more readable format
+   */
   function renderEquation(equation: string) {
     const parts = equation.split(/(\*|\+|-|\/|\(|\))/g);
 
@@ -95,7 +175,7 @@ const Calculator = ({ dark }: { dark: boolean }) => {
       <div className="bg-[#161616] flex flex-col p-4 border border-[#2e2e2e] rounded-md w-full h-fit min-h-16 justify-center">
         {prevEquation ? (
           <div className="mb-[2px] text-[#A0A0A0] font-normal text-xs flex flex-row justify-between">
-            {prevEquation}
+            {renderEquation(prevEquation)}
             <button
               onClick={() => {
                 setCurrentEquation(prevEquation);
@@ -106,7 +186,13 @@ const Calculator = ({ dark }: { dark: boolean }) => {
             </button>
           </div>
         ) : null}
-        <div>{renderEquation(currentEquation)}</div>
+        <div>
+          {currentEquation ? (
+            renderEquation(currentEquation)
+          ) : (
+            <p className="italic text-[#2e2e2e]">Enter your equation...</p>
+          )}
+        </div>
       </div>
       <div className="flex flex-col gap-4 items-center">
         <div className="flex flex-row gap-8 ">
